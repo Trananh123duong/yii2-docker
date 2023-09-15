@@ -2,9 +2,9 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=yii2basic',
-    'username' => 'root',
-    'password' => '',
+    'dsn' => 'mysql:host=db;dbname=app', // Sử dụng tên dịch vụ 'db' (tên container của MySQL trong docker-compose.yml)
+    'username' => 'devs',
+    'password' => 'devs123!',
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)
