@@ -29,21 +29,26 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
             'username',
-            'password',
-            'auth_key',
-            'access_token',
-            'password_hash',
-            'password_reset_token',
             'email:email',
             'name',
             'status',
-            'role',
+            [
+                'attribute' => 'role',
+                'value' => function ($model) {
+                    switch ($model->role) {
+                        case 1:
+                            return 'Administrator';
+                        case 2:
+                            return 'Project Management';
+                        case 3:
+                            return 'Staff';
+                        default:
+                            return 'Unknown';
+                    }
+                },
+            ],
             'description:ntext',
-            'created_at',
-            'updated_at',
-            'verification_token',
         ],
     ]) ?>
 

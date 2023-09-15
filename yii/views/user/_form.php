@@ -30,7 +30,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'status')->textInput() ?>
 
-    <?= $form->field($model, 'role')->textInput() ?>
+    <?= $form->field($model, 'role')->dropDownList([
+        '1' => 'Administrator',
+        '2' => 'Project Management',
+        '3' => 'Staff',
+    ]) ?>
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 

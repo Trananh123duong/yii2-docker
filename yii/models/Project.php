@@ -19,6 +19,8 @@ use Yii;
  */
 class Project extends \yii\db\ActiveRecord
 {
+    public $newProjectManager;
+
     /**
      * {@inheritdoc}
      */

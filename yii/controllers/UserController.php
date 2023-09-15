@@ -7,6 +7,7 @@ use app\models\search\UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -41,11 +42,20 @@ class UserController extends Controller
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
+        if ($this->request->get('isApi') == true) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            return [
+                'status' => true,
+                'dataProvider' => $dataProvider->getModels(), // Lấy mảng các dòng dữ liệu
+            ];
+        }
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
+
 
     /**
      * Displays a single User model.

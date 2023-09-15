@@ -31,7 +31,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'name',
-            'projectManagerId',
+            [
+                'attribute' =>'manager',
+                'value' => function ($model) {
+                    return $model->projectManager->username;
+                }
+            ],
             'description:ntext',
             'createDate',
             'updateDate',

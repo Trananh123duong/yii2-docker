@@ -29,9 +29,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
             'name',
-            'projectManagerId',
+            [
+                'attribute' =>'projectManagerId',
+                'value' => function ($model) {
+                    return $model->projectManager->username;
+                }
+            ],
             'description:ntext',
             'createDate',
             //'updateDate',

@@ -29,21 +29,26 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
             'username',
-            'password',
-            'auth_key',
-            'access_token',
-            //'password_hash',
-            //'password_reset_token',
-            //'email:email',
-            //'name',
-            //'status',
-            //'role',
-            //'description:ntext',
-            //'created_at',
-            //'updated_at',
-            //'verification_token',
+            'email:email',
+            'name',
+            'status',
+            [
+                'attribute' =>'role',
+                'value' => function ($model) {
+                    switch ($model->role) {
+                        case 1:
+                            return 'Administrator';
+                        case 2:
+                            return 'Project Management';
+                        case 3:
+                            return 'Staff';
+                        default:
+                            return 'Unknown';
+                    }
+                }
+            ],
+            'description:ntext',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, User $model, $key, $index, $column) {
