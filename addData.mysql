@@ -1,0 +1,39 @@
+INSERT INTO User (username, password, auth_key, access_token, password_hash, email, name, status, role, description, created_at, updated_at, verification_token)
+VALUES
+    ('user1', 'password1', 'auth_key1', 'access_token1', 'hash1', 'user1@example.com', 'User 1', 1, 1, 'Description 1', UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), 'token1'),
+    ('user2', 'password2', 'auth_key2', 'access_token2', 'hash2', 'user2@example.com', 'User 2', 1, 1, 'Description 2', UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), 'token2'),
+    ('user3', 'password3', 'auth_key3', 'access_token3', 'hash3', 'user3@example.com', 'User 3', 1, 1, 'Description 3', UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), 'token3'),
+    ('user4', 'password4', 'auth_key4', 'access_token4', 'hash4', 'user4@example.com', 'User 4', 1, 1, 'Description 4', UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), 'token4'),
+    ('user5', 'password5', 'auth_key5', 'access_token5', 'hash5', 'user5@example.com', 'User 5', 1, 1, 'Description 5', UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), 'token5'),
+    ('user6', 'password6', 'auth_key6', 'access_token6', 'hash6', 'user6@example.com', 'User 6', 1, 1, 'Description 6', UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), 'token6'),
+    ('user7', 'password7', 'auth_key7', 'access_token7', 'hash7', 'user7@example.com', 'User 7', 1, 1, 'Description 7', UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), 'token7'),
+    ('user8', 'password8', 'auth_key8', 'access_token8', 'hash8', 'user8@example.com', 'User 8', 1, 1, 'Description 8', UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), 'token8'),
+    ('user9', 'password9', 'auth_key9', 'access_token9', 'hash9', 'user9@example.com', 'User 9', 1, 1, 'Description 9', UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), 'token9'),
+    ('user10', 'password10', 'auth_key10', 'access_token10', 'hash10', 'user10@example.com', 'User 10', 1, 1, 'Description 10', UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), 'token10');
+
+
+INSERT INTO Project (name, projectManagerId, description, createDate, updateDate)
+VALUES
+    ('Project 1', 1, 'Description 1', NOW(), NOW()),
+    ('Project 2', 2, 'Description 2', NOW(), NOW()),
+    ('Project 3', 3, 'Description 3', NOW(), NOW()),
+    ('Project 4', 4, 'Description 4', NOW(), NOW()),
+    ('Project 5', 5, 'Description 5', NOW(), NOW()),
+    ('Project 6', 6, 'Description 6', NOW(), NOW()),
+    ('Project 7', 7, 'Description 7', NOW(), NOW()),
+    ('Project 8', 8, 'Description 8', NOW(), NOW()),
+    ('Project 9', 9, 'Description 9', NOW(), NOW()),
+    ('Project 10', 10, 'Description 10', NOW(), NOW());
+
+INSERT INTO project_staff (projectId, userId)
+VALUES
+    (1, 1), (1, 2), (1, 3), (1, 4), (1, 5),
+    (2, 1), (2, 3), (2, 5), (2, 7), (2, 9),
+    (3, 2), (3, 4), (3, 6), (3, 8), (3, 10),
+    (4, 2), (4, 4), (4, 6), (4, 8), (4, 10),
+    (5, 1), (5, 3), (5, 5), (5, 7), (5, 9),
+    (6, 3), (6, 6), (6, 9), (6, 1), (6, 4),
+    (7, 5), (7, 7), (7, 1), (7, 8), (7, 10),
+    (8, 2), (8, 4), (8, 5), (8, 7), (8, 9),
+    (9, 3), (9, 4), (9, 6), (9, 8), (9, 10),
+    (10, 1), (10, 2), (10, 3), (10, 4), (10, 5);
