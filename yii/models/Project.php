@@ -22,6 +22,7 @@ use yii\db\ActiveRecord;
 class Project extends \yii\db\ActiveRecord
 {
     public $newProjectManager;
+    public $staffIds;
 
     /**
      * {@inheritdoc}

@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\Url;
+use kartik\select2\Select2;
 
 /** @var yii\web\View $this */
 /** @var app\models\Project $model */
@@ -13,6 +15,8 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
     <?php
     // Kiểm tra xem có phải đang cập nhật dự án hay không
@@ -27,7 +31,18 @@ use yii\widgets\ActiveForm;
     }
     ?>
 
-    <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'staffIds')->checkboxList(
+        \yii\helpers\ArrayHelper::map($users, 'id', 'username'),
+        // ['separator' => '<br>']
+        [
+            'separator' => '<br>',
+            'item' => function ($index, $label, $name, $checked, $value) use ($selectedUserIds) {
+                $checked = in_array($value, $selectedUserIds) ? ['checked' => 'checked'] : [];
+                return '<label><input type="checkbox" name="' . $name . '" value="' . $value . '" ' . Html::renderTagAttributes($checked) . '> ' . $label . '</label>';
+            },
+        ]
+    
+    ) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
