@@ -4,10 +4,12 @@ namespace app\controllers;
 
 use app\models\User;
 use app\models\search\UserSearch;
+use app\models\ProjectStaff;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
+use yii\db\Query;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -68,6 +70,20 @@ class UserController extends Controller
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
+    }
+
+    public function actionListProjectsByUser($id)
+    {
+        $user = new Query();
+
+        $user->from('project_staff')
+            ->select(['project.id', 'project.name', 'project.description', 'project.createDate', 'user.username'])
+            ->leftJoin('project', 'project.id = project_staff.projectId')
+            ->innerJoin('user', 'project.projectManagerId = user.id')
+            ->where(['project_staff.userId' => $id]);
+
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        return $user->all();
     }
 
     /**

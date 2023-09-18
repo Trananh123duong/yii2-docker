@@ -7,6 +7,8 @@ use app\models\search\ProjectSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\db\Query;
+use Yii;
 
 /**
  * ProjectController implements the CRUD actions for Project model.
@@ -58,6 +60,19 @@ class ProjectController extends Controller
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
+    }
+
+    public function actionListUsersByProject($id)
+    {
+        $user = new Query();
+
+        $user->from('project_staff')
+            ->select(['user.id', 'user.username', 'user.email', 'user.role'])
+            ->leftJoin('user', 'user.id = project_staff.userId')
+            ->where(['project_staff.projectId' => $id]);
+
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        return $user->all();
     }
 
     /**

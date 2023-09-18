@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%project}}".
@@ -56,6 +58,20 @@ class Project extends \yii\db\ActiveRecord
             'description' => 'Description',
             'createDate' => 'Create Date',
             'updateDate' => 'Update Date',
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['createDate', 'updateDate'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => 'updateDate',
+                ],
+                'value' => new \yii\db\Expression('NOW()'),
+            ],
         ];
     }
 

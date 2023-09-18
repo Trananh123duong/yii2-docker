@@ -47,6 +47,7 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                // 'user/list-projects-by-user/<id:\d+>' => 'user/list-projects-by-user',
             ],
         ],
         
