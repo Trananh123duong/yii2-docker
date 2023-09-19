@@ -14,7 +14,14 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
+    <?php
+    if (!$model->isNewRecord) {
+        echo $form->field($model, 'newPassword')->textInput(['maxlength' => true]);
+
+    } else {
+        echo $form->field($model, 'password')->passwordInput(['maxlength' => true]);
+    }
+    ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 

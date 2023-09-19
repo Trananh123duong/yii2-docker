@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "user".
@@ -20,6 +21,8 @@ use Yii;
  */
 class User extends \yii\db\ActiveRecord
 {
+    public $newPassword;
+
     /**
      * {@inheritdoc}
      */
@@ -57,6 +60,21 @@ class User extends \yii\db\ActiveRecord
             'role' => 'Role',
             'description' => 'Description',
         ];
+    }
+    
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if (!empty($this->newPassword)) {
+                $this->password = Yii::$app->security->generatePasswordHash($this->newPassword);
+                $this->newPassword = null;
+            } else {
+                $this->password = Yii::$app->security->generatePasswordHash($this->password);
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
