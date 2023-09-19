@@ -48,17 +48,10 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 // 'user/list-projects-by-user/<id:\d+>' => 'user/list-projects-by-user',
+                '' => 'site/login',
             ],
         ],
         
-    ],
-    'modules' => [
-        'gridview' =>  [
-            'class' => '\kartik\grid\Module'
-        ],
-        'select2' => [
-            'class' => '\kartik\select2\Module'
-        ]
     ],
     'params' => $params,
 ];
