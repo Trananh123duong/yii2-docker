@@ -1,0 +1,4 @@
+SELECT p.id, p.name, p.price
+FROM Product p
+INNER JOIN Order_detail od ON p.id = od.productId
+INNER JOIN `Order` o ON od.orderId = o.id;

@@ -1,0 +1,24 @@
+SELECT
+    p.name AS `Tên sản phẩm`,
+    SUM(CASE WHEN MONTH(o.`date`) = 1 THEN od.`quantity` ELSE 0 END) AS `Tháng 1`,
+    SUM(CASE WHEN MONTH(o.`date`) = 2 THEN od.`quantity` ELSE 0 END) AS `Tháng 2`,
+    SUM(CASE WHEN MONTH(o.`date`) = 3 THEN od.`quantity` ELSE 0 END) AS `Tháng 3`,
+    SUM(CASE WHEN MONTH(o.`date`) = 4 THEN od.`quantity` ELSE 0 END) AS `Tháng 4`,
+    SUM(CASE WHEN MONTH(o.`date`) = 5 THEN od.`quantity` ELSE 0 END) AS `Tháng 5`,
+    SUM(CASE WHEN MONTH(o.`date`) = 6 THEN od.`quantity` ELSE 0 END) AS `Tháng 6`,
+    SUM(CASE WHEN MONTH(o.`date`) = 7 THEN od.`quantity` ELSE 0 END) AS `Tháng 7`,
+    SUM(CASE WHEN MONTH(o.`date`) = 8 THEN od.`quantity` ELSE 0 END) AS `Tháng 8`,
+    SUM(CASE WHEN MONTH(o.`date`) = 9 THEN od.`quantity` ELSE 0 END) AS `Tháng 9`,
+    SUM(CASE WHEN MONTH(o.`date`) = 10 THEN od.`quantity` ELSE 0 END) AS `Tháng 10`,
+    SUM(CASE WHEN MONTH(o.`date`) = 11 THEN od.`quantity` ELSE 0 END) AS `Tháng 11`,
+    SUM(CASE WHEN MONTH(o.`date`) = 12 THEN od.`quantity` ELSE 0 END) AS `Tháng 12`
+FROM
+    `Product` p
+LEFT JOIN
+    `Order_detail` od ON p.`id` = od.`productId`
+LEFT JOIN
+    `Order` o ON od.`orderId` = o.`id`
+GROUP BY
+    p.`id`, p.`name`
+ORDER BY
+    p.`id`;

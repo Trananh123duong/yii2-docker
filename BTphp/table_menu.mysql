@@ -1,0 +1,18 @@
+CREATE TABLE IF NOT EXISTS `menu` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `parent` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=11 ;
+ 
+INSERT INTO `menu` (`id`, `title`, `parent`) VALUES
+(1, 'PHP', 0),
+(2, 'JAVASCRIPT', 0),
+(3, 'Codeigniter', 1),
+(4, 'Phalcon', 1),
+(5, 'Tutorials', 3),
+(6, 'AngularJS', 2),
+(7, 'jQuery', 2),
+(8, 'Basic', 5),
+(9, 'Advance', 5),
+(10, 'Course', 3);

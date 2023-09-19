@@ -1,0 +1,17 @@
+SELECT 
+    DATE_FORMAT(o.`date`, '%Y') AS `Năm`,
+    DATE_FORMAT(o.`date`, '%m') AS `Tháng`,
+    DATE_FORMAT(o.`date`, '%d') AS `Ngày`,
+    p.`id` AS `Mã sản phẩm`,
+    p.`name` AS `Tên sản phẩm`,
+    COALESCE(SUM(od.`quantity`), 0) AS `Số lượng đã bán`
+FROM 
+    `Product` p
+LEFT JOIN 
+    `Order_detail` od ON p.`id` = od.`productId`
+LEFT JOIN 
+    `Order` o ON od.`orderId` = o.`id`
+GROUP BY 
+    DATE_FORMAT(o.`date`, '%Y-%m-%d'), p.`id`, p.`name`
+ORDER BY 
+    `Năm`, `Tháng`, `Ngày`, `Mã sản phẩm`;

@@ -1,0 +1,8 @@
+SELECT 
+    DATE_FORMAT(o.`date`, '%Y-%m') AS `Tháng`,
+    SUM(p.`price` * od.`quantity`) AS `Doanh số`
+FROM `Order` o
+INNER JOIN `Order_detail` od ON o.`id` = od.`orderId`
+INNER JOIN `Product` p ON od.`productId` = p.`id`
+GROUP BY DATE_FORMAT(o.`date`, '%Y-%m')
+ORDER BY `Tháng`;

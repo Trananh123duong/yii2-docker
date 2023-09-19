@@ -1,0 +1,14 @@
+ALTER TABLE `Order`
+ADD CONSTRAINT `fk_order_customer`
+FOREIGN KEY (`customerId`)
+REFERENCES `Customer` (`id`);
+
+ALTER TABLE `Order_detail`
+ADD CONSTRAINT `fk_order_detail_order`
+FOREIGN KEY (`orderId`)
+REFERENCES `Order` (`id`);
+
+ALTER TABLE `Order_detail`
+ADD CONSTRAINT `fk_order_detail_product`
+FOREIGN KEY (`productId`)
+REFERENCES `Product` (`id`);

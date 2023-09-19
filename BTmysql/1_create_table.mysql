@@ -1,0 +1,23 @@
+CREATE TABLE `Product` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(255),
+  `price` DECIMAL(10, 2)
+);
+
+CREATE TABLE `Order` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `customerId` INT,
+  `date` DATE
+);
+
+CREATE TABLE `Order_detail` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `orderId` INT,
+  `productId` INT,
+  `quantity` INT
+); 
+
+CREATE TABLE `Customer` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(255)
+);
