@@ -25,12 +25,12 @@ while ($row = mysqli_fetch_assoc($result)) {
     $categories[] = $row;
 }
 
-function showCategories($categories, $parent_id = 0, $char = '')
+function showCategories($categories, $parent = 0, $char = '')
 {
     $cate_child = array();
     foreach ($categories as $key => $item)
     {
-        if ($item['parent'] == $parent_id)
+        if ($item['parent'] == $parent)
         {
             $cate_child[] = $item;
             unset($categories[$key]);
@@ -39,12 +39,11 @@ function showCategories($categories, $parent_id = 0, $char = '')
      
     if ($cate_child)
     {
-        echo '<ul class="menu">';
+        echo '<ul>';
         foreach ($cate_child as $key => $item)
         {
             echo '<li><a href="">'.$item['title'];
-             
-            showCategories($categories, $item['id'], $char.'|---');
+            showCategories($categories, $item['id'], $char.'');
             echo '</a></li>';
         }
         echo '</ul>';
@@ -170,7 +169,7 @@ function showCategories($categories, $parent_id = 0, $char = '')
 </head>
 
 <body>
-    <div class="menu-wrapper menu-gold">
+    <div class="menu-wrapper menu-gold menu">
         <?php showCategories($categories); ?>
     </div>
 </body>

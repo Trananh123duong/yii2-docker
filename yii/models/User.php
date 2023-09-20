@@ -41,7 +41,7 @@ class User extends ActiveRecord implements IdentityInterface
             [['username', 'password', 'email', 'role'], 'required'],
             [['role'], 'integer'],
             [['description'], 'string'],
-            [['username', 'password', 'name', 'email'], 'string', 'max' => 255],
+            [['username', 'password', 'newPassword', 'name', 'email'], 'string', 'max' => 255],
             [['username'], 'unique'],
             [['email'], 'unique'],
         ];
@@ -71,11 +71,12 @@ class User extends ActiveRecord implements IdentityInterface
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
-            if (!empty($this->newPassword)) {
-                $this->password = Yii::$app->security->generatePasswordHash($this->newPassword);
-                $this->newPassword = null;
-            } else {
+            if ($insert == true) {
                 $this->password = Yii::$app->security->generatePasswordHash($this->password);
+            } else {
+                if (!empty($this->newPassword)) {
+                    $this->password = Yii::$app->security->generatePasswordHash($this->newPassword);
+                }
             }
             return true;
         }

@@ -12,6 +12,11 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+            'cache' => 'cache'
+            // 'defaultRoles' => ['guest'], // Nếu bạn muốn thiết lập vai trò mặc định cho người dùng chưa đăng nhập
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'EaxuCNLfK77ox9wSLGo9YnDGlUcng-1-',
