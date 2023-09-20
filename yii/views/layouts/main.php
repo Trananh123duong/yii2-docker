@@ -40,15 +40,39 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
-            ['label' => 'GII', 'url' => ['/gii']],
-            ['label' => 'User', 'url' => ['/user']],
-            ['label' => 'Project', 'url' => ['/project']],
+            // ['label' => 'Home', 'url' => ['/site/index']],
+            // ['label' => 'About', 'url' => ['/site/about']],
+            // ['label' => 'Contact', 'url' => ['/site/contact']],
+            // ['label' => 'GII', 'url' => ['/gii']],
+            // ['label' => 'User', 'url' => ['/user']],
+            // ['label' => 'Project', 'url' => ['/project']],
             Yii::$app->user->isGuest
                 ? ['label' => 'Login', 'url' => ['/site/login']]
                 : '<li class="nav-item">'
+                    . Html::beginForm(['/user'])
+                    . Html::submitButton(
+                        'User',
+                        ['class' => 'nav-link btn btn-link logout']
+                    )
+                    . Html::endForm()
+                    . '</li>' .
+                    '<li class="nav-item">'
+                    . Html::beginForm(['/project'])
+                    . Html::submitButton(
+                        'Project',
+                        ['class' => 'nav-link btn btn-link logout']
+                    )
+                    . Html::endForm()
+                    . '</li>' .
+                    '<li class="nav-item">'
+                    . Html::beginForm(['/user/view?id=' . Yii::$app->user->id])
+                    . Html::submitButton(
+                        'Account',
+                        ['class' => 'nav-link btn btn-link logout']
+                    )
+                    . Html::endForm()
+                    . '</li>' .
+                    '<li class="nav-item">'
                     . Html::beginForm(['/site/logout'])
                     . Html::submitButton(
                         'Logout (' . Yii::$app->user->identity->username . ')',

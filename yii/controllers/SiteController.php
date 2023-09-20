@@ -77,6 +77,9 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            if (Yii::$app->user->identity->role == 3) {
+                return $this->redirect(['/user/view/?id=' . Yii::$app->user->id]);
+            }
             return $this->redirect(['/user']);
         }
 
