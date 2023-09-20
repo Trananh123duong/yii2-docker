@@ -15,7 +15,7 @@ $mydatabase = 'MYSQL_DATABASE';
 
 $conn = new mysqli($host, $user, $pass, $mydatabase);
 
-$sql = 'SELECT d.id, d.name, d.parentId, COUNT(f.id) AS total_files
+$sql = 'SELECT d.id, d.name, d.parentId, COUNT(f.id) AS files
     FROM directories AS d
     LEFT JOIN files AS f ON d.id = f.directoryId
     GROUP BY d.id, d.name';
@@ -28,8 +28,9 @@ while ($row = mysqli_fetch_assoc($result)) {
     $listDirectories[] = $row;
 }
 
-function showDirectories($listDirectories, $parent_id = 0, $char = '')
+function showDirectories($listDirectories, $parent_id = 0, $char = '', $stt = 0)
 {
+    $stt++;
     foreach ($listDirectories as $key => $item) {
         if ($item['parentId'] == $parent_id) {
             echo '<tr>';
@@ -38,13 +39,13 @@ function showDirectories($listDirectories, $parent_id = 0, $char = '')
                 echo '</td>';
 
                 echo '<td>';
-                    echo $char . $item['total_files'];
+                    echo $stt . ' - ' . $item['files'];
                 echo '</td>';
             echo '</tr>';
 
             unset($listDirectories[$key]);
 
-            showDirectories($listDirectories, $item['id'], $char . '|---');
+            showDirectories($listDirectories, $item['id'], $char . '|---', $stt);
         }
     }
 }
