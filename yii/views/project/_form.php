@@ -53,17 +53,14 @@ use kartik\select2\Select2;
 </div>
 
 <?php
-// Thay thế URL của API theo yêu cầu của bạn.
-$url = 'http://localhost:80/user?isApi=true';
-
-$this->registerJs("
-    // Xây dựng dropdownlist ban đầu
-    var options = '<option value=\"\">Select a project manager</option>';
+$js = <<<JS
+// Xây dựng dropdownlist ban đầu
+var options = '<option value=\"\">Select a project manager</option>';
     $('#project-projectmanagerid').html(options);
 
     // Gọi API để cập nhật giá trị của dropdownlist
     $.ajax({
-        url: '$url',
+        url: '/user?isApi=true',
         method: 'GET',
         dataType: 'json',
         success: function(data) {
@@ -80,5 +77,6 @@ $this->registerJs("
             console.error('Error: ' + status + ' - ' + error);
         }
     });
-");
+JS;
+$this->registerJs($js);
 ?>

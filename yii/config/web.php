@@ -35,7 +35,15 @@ $config = [
             'class' => \yii\symfonymailer\Mailer::class,
             'viewPath' => '@app/mail',
             // send all mails to a file by default.
-            'useFileTransport' => true,
+            'useFileTransport' => false,
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp.gmail.com', // SMTP server của bạn
+                'username' => 'trananh123duong@gmail.com', // Tên đăng nhập SMTP
+                'password' => 'dyxj igyr dszc hqao', // Mật khẩu SMTP
+                'port' => '587', // Cổng SMTP (thường là 587 cho TLS hoặc 465 cho SSL)
+                'encryption' => 'tls', // Loại mã hóa (tls hoặc ssl)
+            ],
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

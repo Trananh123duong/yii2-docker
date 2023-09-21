@@ -16,6 +16,9 @@ use yii\web\IdentityInterface;
  * @property string $email
  * @property int $role
  * @property string|null $description
+ * @property string|null $auth_key
+ * @property string|null $access_token
+ * @property string|null $password_reset_token
  *
  * @property ProjectStaff[] $projectStaff
  * @property Project[] $projects
@@ -29,7 +32,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function tableName()
     {
-        return 'user';
+        return '{{%user}}';
     }
 
     /**
@@ -44,6 +47,8 @@ class User extends ActiveRecord implements IdentityInterface
             [['username', 'password', 'newPassword', 'name', 'email'], 'string', 'max' => 255],
             [['username'], 'unique'],
             [['email'], 'unique'],
+            [['access_token'], 'unique'],
+            [['password_reset_token'], 'unique'],
         ];
     }
 
@@ -60,12 +65,58 @@ class User extends ActiveRecord implements IdentityInterface
             'email' => 'Email',
             'role' => 'Role',
             'description' => 'Description',
+            'auth_key' => 'Auth Key',
+            'access_token' => 'Access Token',
+            'password_reset_token' => 'Password Reset Token',
         ];
     }
 
     public function getRole()
     {
         return $this->role; // Trường role trong bảng cơ sở dữ liệu lưu giá trị của vai trò
+    }
+
+    /**
+     * Tạo mã đặt lại mật khẩu và lưu vào trường password_reset_token.
+     *
+     * @return string
+     */
+    public function generatePasswordResetToken()
+    {
+        $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+    }
+
+    /**
+     * Tìm người dùng dựa trên mã đặt lại mật khẩu (reset token).
+     *
+     * @param string $token
+     * @return static|null
+     */
+    public static function findByPasswordResetToken($token)
+    {
+        if (!static::isPasswordResetTokenValid($token)) {
+            return null;
+        }
+
+        return static::findOne(['password_reset_token' => $token]);
+    }
+
+    /**
+     * Kiểm tra xem mã đặt lại mật khẩu có hợp lệ hay không.
+     *
+     * @param string $token
+     * @return bool
+     */
+    public static function isPasswordResetTokenValid($token)
+    {
+        if (empty($token)) {
+            return false;
+        }
+
+        $timestamp = (int) substr($token, strrpos($token, '_') + 1);
+        $expirationTime = Yii::$app->params['user.passwordResetTokenExpire']; // Thời gian hết hạn (cấu hình trong params)
+
+        return $timestamp + $expirationTime >= time();
     }
 
     public function beforeSave($insert)

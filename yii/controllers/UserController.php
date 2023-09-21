@@ -70,15 +70,39 @@ class UserController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
+    // public function actionView($id)
+    // {
+    //     $model = $this->findModel($id);
+    //     // if (Yii::$app->user->can('detailUser') || (Yii::$app->user->identity->role == 3 && Yii::$app->user->id == $model->id)) {
+    //     if (Yii::$app->user->can('detailUser')) {
+    //         if (Yii::$app->user->identity->role == 3) {
+    //             if (Yii::$app->user->id == $model->id) {
+    //                 return $this->render('view', [
+    //                     'model' => $model,
+    //                 ]);
+    //             } else {
+    //                 throw new ForbiddenHttpException('You do not have permission to detail a user.');
+    //             }
+    //         }
+    //         return $this->render('view', [
+    //             'model' => $model,
+    //         ]);
+    //     } else {
+    //         throw new ForbiddenHttpException('You do not have permission to detail a user.');
+    //     }
+    // }
     public function actionView($id)
     {
-        if (Yii::$app->user->can('detailUser')) {
+        $model = $this->findModel($id);
+        $user = Yii::$app->user->identity;
+
+        if (($user->role < 3) || ($user->role == 3 && $user->id == $model->id)) {
             return $this->render('view', [
-                'model' => $this->findModel($id),
+                'model' => $model,
             ]);
-        } else {
-            throw new ForbiddenHttpException('You do not have permission to detail a user.');
         }
+
+        throw new ForbiddenHttpException('You do not have permission to detail this user.');
     }
 
     public function actionListProjectsByUser($id)
@@ -177,5 +201,48 @@ class UserController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionForgotPassword()
+    {
+        $model = new User();
+        if ($model->load(Yii::$app->request->post())) {
+            $model->generatePasswordResetToken();
+            var_dump($model->generatePasswordResetToken());
+            die();
+            
+            if ($model->save()) {
+                // Gửi email đặt lại mật khẩu
+                Yii::$app->mailer->compose('passwordReset', ['model' => $model])
+                    ->setFrom('trananh123duong@gmail.com')
+                    ->setTo($model->email)
+                    ->setSubject('Đặt lại mật khẩu')
+                    ->send();
+
+                Yii::$app->session->setFlash('success', 'Hãy kiểm tra email của bạn để đặt lại mật khẩu.');
+                return $this->redirect(['site/login']);
+            }
+        }
+        return $this->render('forgotPassword', ['model' => $model]);
+    }
+
+    public function actionPasswordReset($token)
+    {
+        $model = User::findByPasswordResetToken($token);
+
+        if (!$model) {
+            throw new NotFoundHttpException('Liên kết đặt lại mật khẩu không hợp lệ.');
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            // Xóa mã đặt lại mật khẩu sau khi đã sử dụng nó
+            $model->password_reset_token = null;
+            $model->save();
+
+            Yii::$app->session->setFlash('success', 'Mật khẩu đã được đặt lại thành công.');
+            return $this->redirect(['site/login']);
+        }
+
+        return $this->render('passwordReset', ['model' => $model]);
     }
 }
