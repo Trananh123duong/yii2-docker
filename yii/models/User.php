@@ -128,10 +128,32 @@ class User extends ActiveRecord implements IdentityInterface
                 if (!empty($this->newPassword)) {
                     $this->password = Yii::$app->security->generatePasswordHash($this->newPassword);
                 }
+                // Kiểm tra nếu có thay đổi role, thì cập nhật quyền
+                if ($this->isAttributeChanged('role')) {
+                    $this->assignRoleBasedOnRoleAttribute();
+                }
             }
             return true;
         }
         return false;
+    }
+
+    public function assignRoleBasedOnRoleAttribute()
+    {
+        $auth = Yii::$app->authManager;
+        $roles = $auth->getRoles();
+
+        // Xóa tất cả quyền của người dùng trước khi gán quyền mới
+        $auth->revokeAll($this->id);
+
+        // Gán quyền dựa trên giá trị role
+        if ($this->role == 1 && isset($roles['administrator'])) {
+            $auth->assign($roles['administrator'], $this->id);
+        } elseif ($this->role == 2 && isset($roles['projectManagement'])) {
+            $auth->assign($roles['projectManagement'], $this->id);
+        } elseif ($this->role == 3 && isset($roles['staff'])) {
+            $auth->assign($roles['staff'], $this->id);
+        }
     }
 
     /**

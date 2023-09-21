@@ -131,6 +131,7 @@ class UserController extends Controller
 
             if ($this->request->isPost) {
                 if ($model->load($this->request->post()) && $model->save()) {
+                    $model->assignRoleBasedOnRoleAttribute();
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
             } else {
@@ -207,21 +208,26 @@ class UserController extends Controller
     {
         $model = new User();
         if ($model->load(Yii::$app->request->post())) {
-            $model->generatePasswordResetToken();
-            var_dump($model->generatePasswordResetToken());
-            die();
+            // Tìm người dùng dựa trên địa chỉ email
+            $user = User::findOne(['email' => $model->email]);
             
-            if ($model->save()) {
-                // Gửi email đặt lại mật khẩu
-                Yii::$app->mailer->compose('passwordReset', ['model' => $model])
-                    ->setFrom('trananh123duong@gmail.com')
-                    ->setTo($model->email)
-                    ->setSubject('Đặt lại mật khẩu')
-                    ->send();
+            if ($user) {
+                $user->generatePasswordResetToken();
+                
+                if ($user->save()) {
+                    // Gửi email đặt lại mật khẩu cho người dùng cụ thể
+                    Yii::$app->mailer->compose('passwordReset', ['user' => $user])
+                        ->setFrom('trananh123duong@gmail.com')
+                        ->setTo($user->email)
+                        ->setSubject('Đặt lại mật khẩu')
+                        ->send();
 
-                Yii::$app->session->setFlash('success', 'Hãy kiểm tra email của bạn để đặt lại mật khẩu.');
-                return $this->redirect(['site/login']);
+                    Yii::$app->session->setFlash('success', 'Hãy kiểm tra email của bạn để đặt lại mật khẩu.');
+                    return $this->redirect(['site/login']);
+                }
             }
+            // Hiển thị thông báo nếu địa chỉ email không tồn tại
+            Yii::$app->session->setFlash('error', 'Không tìm thấy người dùng với địa chỉ email này.');
         }
         return $this->render('forgotPassword', ['model' => $model]);
     }
