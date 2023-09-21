@@ -215,8 +215,9 @@ class UserController extends Controller
                 $user->generatePasswordResetToken();
                 
                 if ($user->save()) {
+                    Yii::$app->mailer->htmlLayout = '@app/views/layouts/email';
                     // Gửi email đặt lại mật khẩu cho người dùng cụ thể
-                    Yii::$app->mailer->compose('passwordReset', ['user' => $user])
+                    Yii::$app->mailer->compose(['html' => '@app/views/mail/passwordReset'], ['user' => $user])
                         ->setFrom('trananh123duong@gmail.com')
                         ->setTo($user->email)
                         ->setSubject('Đặt lại mật khẩu')

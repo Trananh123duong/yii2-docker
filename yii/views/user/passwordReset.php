@@ -10,7 +10,7 @@ use yii\widgets\ActiveForm;
 
 <?php $form = ActiveForm::begin(); ?>
 
-<?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
+<?= $form->field($model, 'newPassword')->passwordInput(['maxlength' => true]) ?>
 
 <div class="form-group">
     <?= Html::submitButton('Đặt Lại Mật Khẩu', ['class' => 'btn btn-primary']) ?>
