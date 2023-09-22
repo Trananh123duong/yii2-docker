@@ -80,7 +80,10 @@ class SiteController extends Controller
             if (Yii::$app->user->identity->role == 3) {
                 return $this->redirect(['/user/view/?id=' . Yii::$app->user->id]);
             }
-            return $this->redirect(['/user']);
+            if (Yii::$app->user->identity->role == 2) {
+                return $this->redirect(['/project']);
+            }
+            return $this->redirect(['/chart']);
         }
 
         $model->password = '';

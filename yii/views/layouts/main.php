@@ -32,6 +32,41 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 
 <header id="header">
     <?php
+    $items = [];
+
+    if (Yii::$app->user->isGuest) {
+        $items[] = ['label' => 'Login', 'url' => ['/site/login']];
+    } else {
+        $role = Yii::$app->user->identity->role;
+    
+        if ($role == 1) {
+            $items[] = ['label' => 'User', 'url' => ['/user']];
+            $items[] = ['label' => 'Project', 'url' => ['/project']];
+            $items[] = ['label' => 'Chart', 'url' => ['/chart']];
+            $items[] = ['label' => 'Account', 'url' => ['/user/view', 'id' => Yii::$app->user->id]];
+            $items[] = [
+                'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+                'url' => ['/site/logout'],
+                'linkOptions' => ['data-method' => 'post']
+            ];
+        } elseif ($role == 2) {
+            $items[] = ['label' => 'Project', 'url' => ['/project']];
+            $items[] = ['label' => 'Account', 'url' => ['/user/view', 'id' => Yii::$app->user->id]];
+            $items[] = [
+                'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+                'url' => ['/site/logout'],
+                'linkOptions' => ['data-method' => 'post']
+            ];
+        } elseif ($role == 3) {
+            $items[] = ['label' => 'Account', 'url' => ['/user/view', 'id' => Yii::$app->user->id]];
+            $items[] = [
+                'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+                'url' => ['/site/logout'],
+                'linkOptions' => ['data-method' => 'post']
+            ];
+        }
+    }
+
     NavBar::begin([
         'brandLabel' => Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
@@ -39,48 +74,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     ]);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
-        'items' => [
-            // ['label' => 'Home', 'url' => ['/site/index']],
-            // ['label' => 'About', 'url' => ['/site/about']],
-            // ['label' => 'Contact', 'url' => ['/site/contact']],
-            // ['label' => 'GII', 'url' => ['/gii']],
-            // ['label' => 'User', 'url' => ['/user']],
-            // ['label' => 'Project', 'url' => ['/project']],
-            Yii::$app->user->isGuest
-                ? ['label' => 'Login', 'url' => ['/site/login']]
-                : '<li class="nav-item">'
-                    . Html::beginForm(['/user'])
-                    . Html::submitButton(
-                        'User',
-                        ['class' => 'nav-link btn btn-link logout']
-                    )
-                    . Html::endForm()
-                    . '</li>' .
-                    '<li class="nav-item">'
-                    . Html::beginForm(['/project'])
-                    . Html::submitButton(
-                        'Project',
-                        ['class' => 'nav-link btn btn-link logout']
-                    )
-                    . Html::endForm()
-                    . '</li>' .
-                    '<li class="nav-item">'
-                    . Html::beginForm(['/user/view?id=' . Yii::$app->user->id])
-                    . Html::submitButton(
-                        'Account',
-                        ['class' => 'nav-link btn btn-link logout']
-                    )
-                    . Html::endForm()
-                    . '</li>' .
-                    '<li class="nav-item">'
-                    . Html::beginForm(['/site/logout'])
-                    . Html::submitButton(
-                        'Logout (' . Yii::$app->user->identity->username . ')',
-                        ['class' => 'nav-link btn btn-link logout']
-                    )
-                    . Html::endForm()
-                    . '</li>'
-        ]
+        'items' => $items,
     ]);
     // echo Menu::widget([
     //     'items' => [

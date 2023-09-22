@@ -218,7 +218,7 @@ class UserController extends Controller
                     Yii::$app->mailer->htmlLayout = '@app/views/layouts/email';
                     // Gửi email đặt lại mật khẩu cho người dùng cụ thể
                     Yii::$app->mailer->compose(['html' => '@app/views/mail/passwordReset'], ['user' => $user])
-                        ->setFrom('trananh123duong@gmail.com')
+                        ->setFrom('develop@dev.co-mit.com')
                         ->setTo($user->email)
                         ->setSubject('Đặt lại mật khẩu')
                         ->send();
